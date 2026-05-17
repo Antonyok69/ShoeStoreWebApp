@@ -59,38 +59,38 @@ class ProductApiController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $product = Shoe::find($id);
+{
+    $product = Shoe::find($id);
 
-        if (!$product) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Product not found'
-            ], 404);
-        }
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'stock' => $request->stock ?? 0,
-            'category' => 'required|string|max:255',
-            'image' => 'nullable|string|max:255',
-        ]);
-
-        $product->update([
-            'name' => $request->name,
-            'price' => $request->price,
-            'stock' => $request->stock ?? 0,
-            'category' => $request->category,
-            'image' => $request->image ?? $product->image,
-        ]);
-
+    if (!$product) {
         return response()->json([
-            'success' => true,
-            'message' => 'Product updated successfully',
-            'product' => $product
-        ]);
+            'success' => false,
+            'message' => 'Product not found'
+        ], 404);
     }
+
+    $request->validate([
+        'name' => 'required|string',
+        'price' => 'required|numeric',
+        'stock' => 'nullable|integer',
+        'category' => 'required|string',
+        'image' => 'nullable|string'
+    ]);
+
+    $product->update([
+        'name' => $request->name,
+        'price' => $request->price,
+        'stock' => $request->stock ?? 0,
+        'category' => $request->category,
+        'image' => $request->image ?? 'default.jpg'
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Product updated successfully',
+        'product' => $product
+    ]);
+}
 
     public function destroy($id)
     {
