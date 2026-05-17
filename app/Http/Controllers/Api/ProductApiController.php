@@ -10,47 +10,99 @@ class ProductApiController extends Controller
 {
     public function index()
     {
-        return response()->json(Shoe::all());
+        return response()->json([
+            'success' => true,
+            'products' => Shoe::orderBy('id', 'desc')->get()
+        ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'price' => 'required|numeric',
-            'category' => 'required',
+            'category' => 'required|string|max:255',
+            'image' => 'nullable|string|max:255',
         ]);
 
-        $shoe = Shoe::create([
+        $product = Shoe::create([
             'name' => $request->name,
             'price' => $request->price,
             'category' => $request->category,
-            'image' => $request->image ?? null,
+            'image' => $request->image,
         ]);
 
-        return response()->json($shoe, 201);
+        return response()->json([
+            'success' => true,
+            'message' => 'Product added successfully',
+            'product' => $product
+        ], 201);
+    }
+
+    public function show($id)
+    {
+        $product = Shoe::find($id);
+
+        if (!$product) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'product' => $product
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        $shoe = Shoe::findOrFail($id);
+        $product = Shoe::find($id);
 
-        $shoe->update([
+        if (!$product) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product not found'
+            ], 404);
+        }
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'category' => 'required|string|max:255',
+            'image' => 'nullable|string|max:255',
+        ]);
+
+        $product->update([
             'name' => $request->name,
             'price' => $request->price,
             'category' => $request->category,
-            'image' => $request->image ?? $shoe->image,
+            'image' => $request->image ?? $product->image,
         ]);
 
-        return response()->json($shoe);
+        return response()->json([
+            'success' => true,
+            'message' => 'Product updated successfully',
+            'product' => $product
+        ]);
     }
 
     public function destroy($id)
     {
-        $shoe = Shoe::findOrFail($id);
-        $shoe->delete();
+        $product = Shoe::find($id);
+
+        if (!$product) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product not found'
+            ], 404);
+        }
+
+        $product->delete();
 
         return response()->json([
+            'success' => true,
             'message' => 'Product deleted successfully'
         ]);
     }
