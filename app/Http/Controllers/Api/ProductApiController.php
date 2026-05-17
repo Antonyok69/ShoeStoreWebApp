@@ -21,6 +21,7 @@ class ProductApiController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
+            'stock' => 'nullable|integer',
             'category' => 'required|string|max:255',
             'image' => 'nullable|string|max:255',
         ]);
@@ -28,6 +29,7 @@ class ProductApiController extends Controller
         $product = Shoe::create([
             'name' => $request->name,
             'price' => $request->price,
+            'stock' => $request->stock ?? 0,
             'category' => $request->category,
             'image' => $request->image,
         ]);
@@ -70,6 +72,7 @@ class ProductApiController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
+            'stock' => $request->stock ?? 0,
             'category' => 'required|string|max:255',
             'image' => 'nullable|string|max:255',
         ]);
@@ -77,6 +80,7 @@ class ProductApiController extends Controller
         $product->update([
             'name' => $request->name,
             'price' => $request->price,
+            'stock' => $request->stock ?? 0,
             'category' => $request->category,
             'image' => $request->image ?? $product->image,
         ]);
