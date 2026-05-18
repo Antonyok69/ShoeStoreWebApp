@@ -124,16 +124,16 @@ class ShoeController extends Controller
 
         return redirect()->route('shoes.index')->with('success', 'Shoe deleted successfully.');
     }
-    public function home()
-    {
-        $mainShoes = Shoe::where('category', 'main')->get();
-    
-        if (Auth::user() && Auth::user()->is_admin) {
-            return view('admin.adminHouse', compact('mainShoes'));
-        } else {
-            return view('FrontEnd.home', compact('mainShoes'));
-        }
+   public function home()
+{
+    $mainShoes = Shoe::orderBy('id', 'desc')->get();
+
+    if (Auth::user() && Auth::user()->is_admin) {
+        return view('admin.adminHouse', compact('mainShoes'));
+    } else {
+        return view('FrontEnd.home', compact('mainShoes'));
     }
+}
 
 
     public function search(Request $request)
@@ -146,7 +146,9 @@ class ShoeController extends Controller
 
 public function men()
 {
-    $menShoes = Shoe::where('category', 'men')->get();
+    $menShoes = Shoe::where('category', 'Men')
+        ->orderBy('id', 'desc')
+        ->get();
 
     if (Auth::user() && Auth::user()->is_admin) {
         return view('admin.adminMen', compact('menShoes'));
@@ -156,7 +158,9 @@ public function men()
 }
 public function women()
 {
-    $womenShoes = Shoe::where('category', 'women')->get();
+    $womenShoes = Shoe::where('category', 'Women')
+        ->orderBy('id', 'desc')
+        ->get();
 
     if (Auth::user() && Auth::user()->is_admin) {
         return view('admin.adminWomen', compact('womenShoes'));

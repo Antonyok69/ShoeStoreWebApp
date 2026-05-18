@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+
 use App\Http\Controllers\ShoeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\CommandController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\StatisticsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +32,8 @@ Route::get('/about', [ShoeController::class, 'about'])->name('shoes.about');
 Route::get('/contactUs', [ShoeController::class, 'contactUs'])->name('shoes.contactUs');
 
 Route::get('/search', [ShoeController::class, 'search'])->name('search');
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -94,3 +98,5 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 
     Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
 });
+
+
