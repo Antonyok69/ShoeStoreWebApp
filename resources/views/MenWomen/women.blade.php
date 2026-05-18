@@ -13,9 +13,9 @@
      alt="Shoe Image"
      width="180"
      height="180"
-     style="object-fit: cover;">
+     style="object-fit: contain;">
             </a>
-            
+
             <div class="desc">
                 <h2><a href="{{ Auth::check() ? route('shoes.show', $shoe->id) : route('login') }}">{{ $shoe->name }}</a></h2>
                 <span class="price">${{ $shoe->price }}</span>

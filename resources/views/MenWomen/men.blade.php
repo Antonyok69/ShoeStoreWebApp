@@ -14,13 +14,13 @@
         @foreach ($menShoes as $shoe)
     <div class="col-lg-3 mb-4 text-center">
         <div class="product-entry border">
-            
+
             <a href="{{ Auth::check() ? route('shoes.show', $shoe->id) : route('login') }}" class="prod-img">
                 <img src="{{ asset('images/' . basename($shoe->image)) }}"
      alt="Shoe Image"
      width="180"
      height="180"
-     style="object-fit: cover;">
+     style="object-fit: contain;">
             </a>
 
             <div class="desc">
