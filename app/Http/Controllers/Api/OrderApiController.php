@@ -15,4 +15,23 @@ class OrderApiController extends Controller
             'orders' => Order::latest()->get()
         ]);
     }
+
+    public function destroy($id)
+{
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Order not found'
+        ], 404);
+    }
+
+    $order->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Order deleted successfully'
+    ]);
+}
 }

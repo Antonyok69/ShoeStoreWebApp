@@ -49,3 +49,4 @@ Route::post('/pos/sale', [OrderApiController::class, 'storeSale']);
 */
 
 Route::get('/orders', [OrderApiController::class, 'index']);
+Route::delete('/orders/{id}', [OrderApiController::class, 'destroy']);
