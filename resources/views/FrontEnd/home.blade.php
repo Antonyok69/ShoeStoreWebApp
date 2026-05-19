@@ -110,7 +110,9 @@
     <div class="col-lg-3 mb-4 text-center">
         <div class="product-entry border">
             <a href="{{ Auth::check() ? route('shoes.show', $shoe->id) : route('login') }}" class="prod-img">
-                <img src="{{ asset('storage/' . $shoe->image) }}" alt="Shoe Image" class="img-fluid">
+                <img src="{{ asset('images/' . basename($shoe->image)) }}"
+     alt="{{ $shoe->name }}"
+     style="width:200px;height:200px;object-fit:contain;">
             </a>
             <div class="desc">
                 <h2><a href="{{ Auth::check() ? route('shoes.show', $shoe->id) : route('login') }}">{{ $shoe->name }}</a></h2>
