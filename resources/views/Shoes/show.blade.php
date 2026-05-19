@@ -9,7 +9,10 @@
 
                 <div class="card-body">
                     <div class="text-center">
-                        <img src="{{ asset('storage/' . $shoe->image) }}" alt="Shoe Image" class="img-fluid">
+                        <img src="{{ asset('images/' . basename($shoe->image)) }}"
+     alt="{{ $shoe->name }}"
+     class="img-fluid"
+     style="width:300px; height:300px; object-fit:contain;">
                     </div>
                     <h2 class="mt-4">{{ $shoe->name }}</h2>
                     <p><strong>Price:</strong> ${{ $shoe->price }}</p>
