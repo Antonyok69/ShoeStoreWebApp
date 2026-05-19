@@ -24,7 +24,10 @@
                         @foreach ($cartItems as $cartItem)
                             <tr>
                                 <td>
-                                    <img src="{{ asset('storage/' . $cartItem->shoe->image) }}" alt="{{ $cartItem->shoe->name }}" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
+                                    <img src="{{ asset('images/' . basename($cartItem->shoe->image)) }}"
+     alt="{{ $cartItem->shoe->name }}"
+     class="img-thumbnail"
+     style="width: 100px; height: 100px; object-fit: contain;">
                                 </td>
                                 <td>{{ $cartItem->shoe->name }}</td>
                                 <td>{{ $cartItem->size }}</td>
