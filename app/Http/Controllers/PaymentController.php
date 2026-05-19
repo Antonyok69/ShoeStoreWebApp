@@ -4,61 +4,56 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Command;
-    
-use Illuminate\Support\Facades\Mail;
-
-
-use App\Mail\NewCommandNotification;
-use Illuminate\Support\Facades\Session;
-
 use App\Models\Order;
 use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewCommandNotification;
+use Illuminate\Support\Facades\Session;
+
 class PaymentController extends Controller
 {
-    //
     public function processPayment(Request $request)
     {
-        // Perform payment processing logic here
-        // Validate the form data, process the payment, etc.
-
-        // After successful payment, you can display a success flash message
         Session::flash('success', 'Payment successful! Thank you for your purchase.');
-           // Get the currently authenticated user
-           $user = Auth::user();
-            // Retrieve the cart items for the user
-            $cartItems = $user->cartItems()->with('shoe')->get();
 
-            // Create command entries for each cart item in the commands table
-        foreach ($cartItems as $cartItem) {
+        $user = Auth::user();
+
+        $cartItems = Cart::where('user_id', Auth::id())->with('shoe')->get();
+
+        foreach ($cartItems as $item) {
 
             Command::create([
-                'user_id' => $cartItem->user_id,
-                'shoe_id' => $cartItem->shoe_id,
-                'quantity' => $cartItem->quantity,
-                'size' => $cartItem->size,
-                'price' => $cartItem->shoe->price, // Assuming the price is stored in the shoe model
+                'user_id' => $item->user_id,
+                'shoe_id' => $item->shoe_id,
+                'quantity' => $item->quantity,
+                'size' => $item->size,
+                'price' => $item->shoe->price,
             ]);
-                    }
-            // Delete the user's cart items from the database
-            $user->cartItems()->delete();
- // Send email notification to the admin
-//  $adminEmail = 'ali.abdou.genie@gmail.com'; // Update with your admin email address
 
-//  Mail::to($adminEmail)->send(new NewCommandNotification());
+            Order::create([
+                'customer_name' => $user->name,
+                'product_name' => $item->shoe->name,
+                'quantity' => $item->quantity,
+                'price' => $item->shoe->price,
+                'total' => $item->quantity * $item->shoe->price,
+            ]);
 
-            // Redirect the user to a relevant page (e.g., order confirmation page)
-            return redirect()->route('orderConfirmation');
+            $shoe = $item->shoe;
+            $shoe->stock -= $item->quantity;
+            $shoe->save();
+        }
+
+        Cart::where('user_id', Auth::id())->delete();
+
+        return redirect()->route('orderConfirmation');
     }
-
-
-
-
 
     public function showOrderConfirmation()
     {
         return view('cart.orderConfirmation');
     }
+
     public function showPaymentForm()
     {
         return view('payment');
