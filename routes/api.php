@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductApiController;
 use App\Http\Controllers\Api\OrderApiController;
 
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,3 +41,11 @@ Route::delete('/products/{id}', [ProductApiController::class, 'destroy']);
 */
 
 Route::post('/pos/sale', [OrderApiController::class, 'storeSale']);
+
+/*
+|--------------------------------------------------------------------------
+| Orders API Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/orders', [OrderApiController::class, 'index']);
