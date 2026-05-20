@@ -37,6 +37,7 @@ class PaymentController extends Controller
                 'quantity' => $item->quantity,
                 'price' => $item->shoe->price,
                 'total' => $item->quantity * $item->shoe->price,
+                'address' => $request->address
             ]);
 
             $shoe = $item->shoe;
