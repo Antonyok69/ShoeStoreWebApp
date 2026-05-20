@@ -100,3 +100,9 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 });
 
 
+
+Route::middleware('auth')->group(function () {
+    Route::get('/my-orders', [PaymentController::class, 'myOrders'])->name('orders.my');
+});
+
+

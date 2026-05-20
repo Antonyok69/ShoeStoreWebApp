@@ -92,4 +92,13 @@ return redirect()->route('orderConfirmation');
     {
         return view('payment');
     }
+
+    public function myOrders()
+{
+    $orders = Order::where('customer_name', Auth::user()->name)
+        ->latest()
+        ->get();
+
+    return view('Cart.myOrders', compact('orders'));
+}
 }

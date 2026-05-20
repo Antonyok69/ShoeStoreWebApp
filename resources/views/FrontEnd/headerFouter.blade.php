@@ -93,7 +93,15 @@
 										<span class="icon-shopping-cart">[ {{ $cartItemCount }} ]</span>
 									</a>
 								</li>
+
+								 <li>
+        <a class="nav-link" href="{{ route('orders.my') }}">
+            ORDERS
+        </a>
+    </li>
 							@endauth 
+
+							
 
   <!-- auth name and logout -->
 							<li class="cart">
