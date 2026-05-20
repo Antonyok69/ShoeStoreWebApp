@@ -21,7 +21,17 @@
                 <input type="text" name="card_code" id="card_code" class="form-control" required>
             </div>
 
-            <!-- Add any additional fields required for payment -->
+
+            <div class="form-group">
+    <label>Delivery Address</label>
+
+    <textarea
+        name="address"
+        class="form-control"
+        rows="3"
+        required></textarea>
+</div>
+
 
             <button type="submit" class="btn btn-primary">Confirm Payment</button>
         </form>
