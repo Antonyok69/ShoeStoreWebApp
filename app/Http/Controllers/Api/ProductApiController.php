@@ -82,7 +82,9 @@ class ProductApiController extends Controller
         'price' => $request->price,
         'stock' => $request->stock ?? 0,
         'category' => $request->category,
-        'image' => $request->image ?? 'default.jpg'
+        'image' => $request->filled('image')
+    ? basename($request->image)
+    : $product->image,
     ]);
 
     return response()->json([
