@@ -7,21 +7,40 @@ use App\Models\Command;
 use App\Models\Order;
 use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\NewCommandNotification;
 use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
     public function processPayment(Request $request)
     {
-        Session::flash('success', 'Payment successful! Thank you for your purchase.');
+        $request->validate([
+            'full_name' => 'required|string|max:255',
+            'card_number' => 'required|string|max:50',
+            'card_code' => 'required|string|max:20',
+            'address' => 'required|string|max:1000',
+        ]);
 
         $user = Auth::user();
 
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
         $cartItems = Cart::where('user_id', Auth::id())->with('shoe')->get();
 
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart.show')->with('error', 'Your cart is empty.');
+        }
+
         foreach ($cartItems as $item) {
+            if (!$item->shoe) {
+                continue;
+            }
+
+            if ($item->shoe->stock < $item->quantity) {
+                return redirect()->route('cart.show')
+                    ->with('error', $item->shoe->name . ' does not have enough stock.');
+            }
 
             Command::create([
                 'user_id' => $item->user_id,
@@ -32,27 +51,29 @@ class PaymentController extends Controller
             ]);
 
             Order::create([
-                'customer_name' => $user->name,
+                'customer_name' => $request->full_name,
                 'product_name' => $item->shoe->name,
                 'quantity' => $item->quantity,
                 'price' => $item->shoe->price,
                 'total' => $item->quantity * $item->shoe->price,
-                'address' => $request->address
+                'address' => $request->address,
             ]);
 
             $shoe = $item->shoe;
-            $shoe->stock -= $item->quantity;
+            $shoe->stock = max(0, $shoe->stock - $item->quantity);
             $shoe->save();
         }
 
         Cart::where('user_id', Auth::id())->delete();
+
+        Session::flash('success', 'Payment successful! Thank you for your purchase.');
 
         return redirect()->route('orderConfirmation');
     }
 
     public function showOrderConfirmation()
     {
-        return view('cart.orderConfirmation');
+        return view('Cart.orderConfirmation');
     }
 
     public function showPaymentForm()
