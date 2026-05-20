@@ -68,12 +68,24 @@ class PaymentController extends Controller
 
         Session::flash('success', 'Payment successful! Thank you for your purchase.');
 
-        return redirect()->route('orderConfirmation');
+        Session::put('latest_orders', $cartItems->map(function ($item) use ($request) {
+    return [
+        'product_name' => $item->shoe->name,
+        'quantity' => $item->quantity,
+        'price' => $item->shoe->price,
+        'total' => $item->quantity * $item->shoe->price,
+        'address' => $request->address,
+    ];
+})->toArray());
+
+return redirect()->route('orderConfirmation');
     }
 
     public function showOrderConfirmation()
     {
-        return view('Cart.orderConfirmation');
+       $latestOrders = Session::get('latest_orders', []);
+
+    return view('Cart.orderConfirmation', compact('latestOrders'));
     }
 
     public function showPaymentForm()
