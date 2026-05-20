@@ -39,7 +39,7 @@
                 </tbody>
             </table>
 
-            <a href="{{ route('shop') }}" class="btn btn-primary mt-3">Continue Shopping</a>
+           <a href="{{ route('shoes.index') }}" class="btn btn-primary mt-3">Continue Shopping</a>
         </div>
     </div>
 </div>
