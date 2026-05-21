@@ -18,15 +18,25 @@
                     <th>Date</th>
                 </tr>
             </thead>
+
             <tbody>
                 @foreach($orders as $order)
                     <tr>
                         <td>{{ $order->product_name }}</td>
                         <td>{{ $order->quantity }}</td>
-                        <td>${{ number_format($order->price, 2) }}</td>
-                        <td>${{ number_format($order->total, 2) }}</td>
+                        
+                        {{-- PRICE IN PESO --}}
+                        <td>₱{{ number_format($order->price, 2) }}</td>
+
+                        {{-- TOTAL IN PESO --}}
+                        <td>₱{{ number_format($order->total, 2) }}</td>
+
                         <td>{{ $order->address }}</td>
-                        <td>{{ $order->created_at->format('M d, Y h:i A') }}</td>
+
+                        {{-- SAFE DATE FORMAT --}}
+                        <td>
+                            {{ \Carbon\Carbon::parse($order->created_at)->format('M d, Y h:i A') }}
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
