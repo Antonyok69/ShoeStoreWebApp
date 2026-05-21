@@ -15,7 +15,7 @@
      style="width:300px; height:300px; object-fit:contain;">
                     </div>
                     <h2 class="mt-4">{{ $shoe->name }}</h2>
-                    <p><strong>Price:</strong> ${{ $shoe->price }}</p>
+                    <p><strong>Price:</strong> ₱{{ $shoe->price }}</p>
                     <p><strong>Category:</strong> {{ $shoe->category }}</p>
 
                     <form action="{{ route('cart.add', $shoe->id) }}" method="POST">

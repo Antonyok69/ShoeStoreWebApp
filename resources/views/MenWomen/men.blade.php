@@ -25,7 +25,7 @@
 
             <div class="desc">
                 <h2><a href="{{ Auth::check() ? route('shoes.show', $shoe->id) : route('login') }}">{{ $shoe->name }}</a></h2>
-                <span class="price">${{ $shoe->price }}</span>
+                <span class="price">₱{{ $shoe->price }}</span>
             </div>
 
             <form action="{{ route('shoes.show', $shoe->id) }}" method="POST">

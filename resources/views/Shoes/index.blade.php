@@ -31,7 +31,7 @@
                             @forelse ($shoes as $shoe)
                                 <tr>
                                     <td>{{ $shoe->name }}</td>
-                                    <td>${{ $shoe->price }}</td>
+                                    <td>₱{{ $shoe->price }}</td>
                                     <td>{{ $shoe->category }}</td>
                                     <td>
                                         <a href="{{ route('shoes.show', $shoe->id) }}" class="btn btn-primary">{{ __('View') }}</a>

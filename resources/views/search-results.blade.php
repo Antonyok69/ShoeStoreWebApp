@@ -26,7 +26,7 @@
                     </a>
                     <div class="desc">
                         <h2><a href="#">{{ $shoe->name }}</a></h2>
-                        <span class="price">${{ $shoe->price }}</span>
+                        <span class="price">₱{{ $shoe->price }}</span>
                     </div>
                     <form action="{{ route('cart.add', $shoe->id) }}" method="POST">
                         @csrf
